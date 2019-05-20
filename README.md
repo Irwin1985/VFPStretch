@@ -14,7 +14,7 @@
 
 <hr>
 
-### Examples
+### Example
 
 <pre>
  * Create the object anywhere in your main prg file.*
