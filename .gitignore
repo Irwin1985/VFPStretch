@@ -1,14 +1,6 @@
 # Contine la lista de los archivos y carpetas a ignorar
-# Ignorar proyecto
-*.pjx
-*.PJX
-*.pjt
-*.PJT
+
 # Ignorar todos los programas compilados, fomularios, menues y clases
-*.scx
-*.sct
-*.SCX
-*.SCT
 *.mnt
 *.MNT
 *.mnx
