@@ -7,15 +7,12 @@ Define Class VfpStretch As Custom
 	nOriginalWidth		= 0
 	oForm				= .Null.
 
-	#Define object_type 	'O'
-	#Define numeric_type	'N'
-
 	Procedure Do
 		Lparameters toThisform
 		With This
 			.oForm = toThisform
 
-			If Type(".oForm") != object_type
+			If Type(".oForm") != "O"
 				Messagebox("You must create VfpStretch object inside a form!", 48, "Warning!")
 				Return .F.
 			Endif
@@ -48,7 +45,7 @@ Define Class VfpStretch As Custom
 					.SaveOriginalSize(m.oThis)
 				Endif
 
-				If Type("m.oThis.Anchor") = numeric_type And m.oThis.Anchor > 0
+				If Type("m.oThis.Anchor") = "N" And m.oThis.Anchor > 0
 					m.oThis.Anchor = 0
 				Endif
 
@@ -107,7 +104,7 @@ Define Class VfpStretch As Custom
 	Procedure Stretch
 		Lparameters oContainer
 		With This
-			If Type("oContainer") != type_object
+			If Type("oContainer") != "O"
 				oContainer = .oForm
 			Endif
 
