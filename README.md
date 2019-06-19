@@ -16,19 +16,18 @@
 
 ### Example
 
-<pre>
- * Create the object anywhere in your main prg file.*
- * I highly recommend create a property in the _screen object.*
+```xBase
+ // Create the object anywhere in your main prg file.
+ // I highly recommend create a property in the _screen object.
  
  If Type("_Screen.oVfpStretch") = "O"
-	  Removeproperty(_Screen, "oVfpStretch")
- Else &&Type("_Screen.oVfpStretch") = "O"
- Endif &&Type("_Screen.oVfpStretch") = "O"
+   Removeproperty(_Screen, "oVfpStretch")
+ Endif
  
  SET PROCEDURE TO "VFPStretch.prg" ADDITIVE 
  =AddProperty(_Screen, "oVfpStretch", Newobject("vfpStretch",(Locfile("VfpStretch", "prg","VfpStretch Prg Class"))))
  
- *-- Now put this in your init form event.
+ //Now put this in your init form event.
  _Screen.oVfpstretch.Do(THISFORM)
  
-</pre>
+```
