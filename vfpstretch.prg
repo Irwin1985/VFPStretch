@@ -40,34 +40,36 @@ Define Class VfpStretch As Custom
 		With This
 			Local oThis
 			.SaveOriginalSize(m.oContainer)
-			For Each m.oThis In m.oContainer.Controls
-				If !m.oThis.BaseClass == 'Custom'
-					.SaveOriginalSize(m.oThis)
-				Endif
+			For Each m.oThis In m.oContainer.Controls								
+				IF m.oThis.Tag <> "NOSTRETCH"
+					If !m.oThis.BaseClass == 'Custom'
+						.SaveOriginalSize(m.oThis)
+					Endif
 
-				If Type("m.oThis.Anchor") = "N" And m.oThis.Anchor > 0
-					m.oThis.Anchor = 0
-				Endif
+					If Type("m.oThis.Anchor") = "N" And m.oThis.Anchor > 0
+						m.oThis.Anchor = 0
+					Endif
 
-				Do Case
-				Case m.oThis.BaseClass == 'Container'
-					.SaveContainer(m.oThis)
-				Case m.oThis.BaseClass == 'Pageframe'
-					Local oPage
-					For Each oPage In m.oThis.Pages
-						.SaveContainer(m.oPage)
-					Endfor
-				Case m.oThis.BaseClass == 'Grid'
-					Local oColumn
-					For Each oColumn In m.oThis.Columns
-						.SaveOriginalSize(m.oColumn)
-					Endfor
-				Case m.oThis.BaseClass $ 'Commandgroup,Optiongroup'
-					Local oButton
-					For Each oButton In m.oThis.Buttons
-						.SaveOriginalSize(m.oButton)
-					Endfor
-				Endcase
+					Do Case
+					Case m.oThis.BaseClass == 'Container'
+						.SaveContainer(m.oThis)
+					Case m.oThis.BaseClass == 'Pageframe'
+						Local oPage
+						For Each oPage In m.oThis.Pages
+							.SaveContainer(m.oPage)
+						Endfor
+					Case m.oThis.BaseClass == 'Grid'
+						Local oColumn
+						For Each oColumn In m.oThis.Columns
+							.SaveOriginalSize(m.oColumn)
+						Endfor
+					Case m.oThis.BaseClass $ 'Commandgroup,Optiongroup'
+						Local oButton
+						For Each oButton In m.oThis.Buttons
+							.SaveOriginalSize(m.oButton)
+						Endfor
+					ENDCASE
+				ENDIF	
 			Endfor
 		EndWith
 		
