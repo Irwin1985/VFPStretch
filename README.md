@@ -10,9 +10,15 @@
 
 ### Latest Release
 
+**[VFPStretch](/README.md)** - v.2.0 - Release 2020-10-22 13:18:15
+
 **[VFPStretch](/README.md)** - v.1.2 (beta) - Release 2019-05-20 14:35:31
 
 <hr>
+
+### New Features
+
+** Zoom method ** - Automatically adjust the current form size by reading the _screen property 'CurrentZoom'. This property stores the current zoom percentage for all the forms. zero (0) means default size.
 
 ### Example
 

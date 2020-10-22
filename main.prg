@@ -8,6 +8,7 @@ Endif &&Type("_Screen.oVfpStretch") = "O"
 
 Cd (Justpath(Sys(16)))
 Do Form (Locfile("sample1", "scx","Sample Form"))
+
 Read Events
 Release _Screen.oVfpStretch
 Return
