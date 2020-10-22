@@ -2,19 +2,30 @@
 * VfpStretch Class
 *====================================================================
 Define Class VfpStretch As Custom
-
 	nOriginalHeight		= 0
 	nOriginalWidth		= 0
 	oForm				= .Null.
-
-	Procedure Do
-		Lparameters toThisform
+*========================================================================*
+* Function Init
+*========================================================================*
+	Function Init
+		If Type('_screen.CurrentZoom') = 'U'
+			=AddProperty(_screen, 'CurrentZoom', 0)
+		EndIf
+	EndFunc
+*========================================================================*
+* function Do
+*========================================================================*
+	Function Do(toThisform)
 		With This
 			.oForm = toThisform
 
-			If Type(".oForm") != "O"
-				Messagebox("You must create VfpStretch object inside a form!", 48, "Warning!")
-				Return .F.
+			If Type(".oForm") != 'O'
+				.oForm = Iif(Type('_Screen.ActiveForm') == 'O', _Screen.ActiveForm, .Null.)
+				If Isnull(.oForm)
+					Messagebox("You must create VfpStretch object inside a form!", 48, "Warning!")
+					Return .F.
+				Endif
 			Endif
 
 			.oForm.MinHeight = .oForm.Height
@@ -25,23 +36,28 @@ Define Class VfpStretch As Custom
 			.SaveContainer(.oForm)
 
 			=Bindevent(.oForm, "Resize", This, "Stretch", 1)
-		EndWith
-		
-*====================================================================
-	Procedure ResetSize
+			.Zoom()
+		Endwith
+	Endfunc
+*========================================================================*
+* Function ResetSize
+*========================================================================*
+	Function ResetSize
 		With This.oForm
 			.Height = This.nOriginalHeight
 			.Width  = This.nOriginalWidth
-		EndWith
-		
-*====================================================================
-	Procedure SaveContainer
+		Endwith
+	Endfunc
+*========================================================================*
+* Function SaveContainer
+*========================================================================*
+	Function SaveContainer
 		Lparameters oContainer
 		With This
 			Local oThis
 			.SaveOriginalSize(m.oContainer)
-			For Each m.oThis In m.oContainer.Controls								
-				IF m.oThis.Tag <> "NOSTRETCH"
+			For Each m.oThis In m.oContainer.Controls
+				If m.oThis.Tag <> "NOSTRETCH"
 					If !m.oThis.BaseClass == 'Custom'
 						.SaveOriginalSize(m.oThis)
 					Endif
@@ -68,13 +84,15 @@ Define Class VfpStretch As Custom
 						For Each oButton In m.oThis.Buttons
 							.SaveOriginalSize(m.oButton)
 						Endfor
-					ENDCASE
-				ENDIF	
+					Endcase
+				Endif
 			Endfor
-		EndWith
-		
-*====================================================================
-	Procedure SaveOriginalSize
+		Endwith
+	Endfunc
+*========================================================================*
+* Function SaveOriginalSize
+*========================================================================*
+	Function SaveOriginalSize
 		Lparameters oObject
 		If Pemstatus(m.oObject, 'Width', 5)
 			If !Pemstatus(m.oObject, '_nOriginalWidth', 5)
@@ -100,10 +118,12 @@ Define Class VfpStretch As Custom
 
 		If Pemstatus(m.oObject, 'RowHeight', 5)
 			=AddProperty(m.oObject, "_nOriginalRowheight", m.oObject.RowHeight)
-		EndIf
-		
-*====================================================================
-	Procedure Stretch
+		Endif
+	Endfunc
+*========================================================================*
+* Function Stretch
+*========================================================================*
+	Function Stretch
 		Lparameters oContainer
 		With This
 			If Type("oContainer") != "O"
@@ -144,10 +164,12 @@ Define Class VfpStretch As Custom
 			If m.oContainer.BaseClass == 'Form'
 				m.oContainer.LockScreen = .F.
 			Endif
-		EndWith
-*====================================================================
-
-	Procedure AdjustSize
+		Endwith
+	Endfunc
+*========================================================================*
+* Function AdjustSize
+*========================================================================*
+	Function AdjustSize
 		Lparameters oObject
 		Local nHeightRatio, nWidthRatio
 		m.nHeightRatio 	= This.oForm.Height / This.nOriginalHeight
@@ -175,7 +197,32 @@ Define Class VfpStretch As Custom
 			If .BaseClass == 'Control' And Pemstatus(m.oObject, 'RepositionContents', 5)
 				.RepositionContents()
 			Endif
-		EndWith
-		
-*====================================================================
+		Endwith
+	Endfunc
+*========================================================================*
+* Function Zoom
+*========================================================================*
+	Function Zoom
+		If Type('_screen.CurrentZoom') == 'N' and Type('_Screen.ActiveForm') = 'O'
+			Do Case
+			Case _Screen.CurrentZoom > 0 And _Screen.CurrentZoom < 100
+*-- Width
+				nDisp 	= _Screen.Width - _Screen.ActiveForm.MinWidth
+				nWidth 	= Int(nDisp * (_Screen.CurrentZoom / 100))
+				_Screen.ActiveForm.Width = _Screen.ActiveForm.MinWidth + nWidth
+*-- Height
+				nScrHei = _Screen.Height - 25
+				nDisp 	= nScrHei - _Screen.ActiveForm.MinHeight
+				nHeight = Int(nDisp * (_Screen.CurrentZoom / 100))
+				_Screen.ActiveForm.Height = _Screen.ActiveForm.MinHeight + nHeight
+			Case _Screen.CurrentZoom = 100
+				_Screen.ActiveForm.WindowState = 2
+			Otherwise
+*-- Normal (Zoom = 0)
+				_Screen.ActiveForm.Width  = _Screen.ActiveForm.MinWidth
+				_Screen.ActiveForm.Height = _Screen.ActiveForm.MinHeight
+			Endcase
+			_Screen.ActiveForm.AutoCenter = .T.
+		Endif
+	Endfunc
 Enddefine
