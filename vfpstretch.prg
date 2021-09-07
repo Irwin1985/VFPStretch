@@ -1,7 +1,15 @@
+define class vfpStretch as Custom
+	Function Do(toThisform)
+		local lcPropName as String
+		lcPropName = sys(2015)
+		=AddProperty(toThisform, lcPropName, createobject("Stretcher"))
+		toThisform. &lcPropName..Do(toThisform)
+	Endfunc
+enddefine
 *====================================================================
-* VfpStretch Class
+* Stretcher Class
 *====================================================================
-Define Class VfpStretch As Custom
+Define Class Stretcher As Custom
 	nOriginalHeight		= 0
 	nOriginalWidth		= 0
 	oForm				= .Null.
@@ -203,26 +211,28 @@ Define Class VfpStretch As Custom
 * Function Zoom
 *========================================================================*
 	Function Zoom
-		If Type('_screen.CurrentZoom') == 'N' and Type('_Screen.ActiveForm') = 'O'
+		local loForm
+		loForm = this.oForm
+		If Type('_screen.CurrentZoom') == 'N' and Type('loForm') = 'O'
 			Do Case
 			Case _Screen.CurrentZoom > 0 And _Screen.CurrentZoom < 100
 *-- Width
-				nDisp 	= _Screen.Width - _Screen.ActiveForm.MinWidth
+				nDisp 	= _Screen.Width - loForm.MinWidth
 				nWidth 	= Int(nDisp * (_Screen.CurrentZoom / 100))
-				_Screen.ActiveForm.Width = _Screen.ActiveForm.MinWidth + nWidth
+				loForm.Width = loForm.MinWidth + nWidth
 *-- Height
 				nScrHei = _Screen.Height - 25
-				nDisp 	= nScrHei - _Screen.ActiveForm.MinHeight
+				nDisp 	= nScrHei - loForm.MinHeight
 				nHeight = Int(nDisp * (_Screen.CurrentZoom / 100))
-				_Screen.ActiveForm.Height = _Screen.ActiveForm.MinHeight + nHeight
+				loForm.Height = loForm.MinHeight + nHeight
 			Case _Screen.CurrentZoom = 100
-				_Screen.ActiveForm.WindowState = 2
+				loForm.WindowState = 2
 			Otherwise
 *-- Normal (Zoom = 0)
-				_Screen.ActiveForm.Width  = _Screen.ActiveForm.MinWidth
-				_Screen.ActiveForm.Height = _Screen.ActiveForm.MinHeight
+				loForm.Width  = loForm.MinWidth
+				loForm.Height = loForm.MinHeight
 			Endcase
-			_Screen.ActiveForm.AutoCenter = .T.
+			loForm.AutoCenter = .T.
 		Endif
 	Endfunc
 Enddefine
