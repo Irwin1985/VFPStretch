@@ -1,4 +1,14 @@
 define class vfpStretch as Custom
+*========================================================================*
+* Function Init
+*========================================================================*
+	Function Init
+		If Type('_screen.CurrentZoom') = 'U'
+			=AddProperty(_screen, 'CurrentZoom', 0)
+		EndIf
+	EndFunc
+
+
 	Function Do(toThisform)
 		local lcPropName as String
 		lcPropName = sys(2015)
@@ -13,14 +23,6 @@ Define Class Stretcher As Custom
 	nOriginalHeight		= 0
 	nOriginalWidth		= 0
 	oForm				= .Null.
-*========================================================================*
-* Function Init
-*========================================================================*
-	Function Init
-		If Type('_screen.CurrentZoom') = 'U'
-			=AddProperty(_screen, 'CurrentZoom', 0)
-		EndIf
-	EndFunc
 *========================================================================*
 * function Do
 *========================================================================*
