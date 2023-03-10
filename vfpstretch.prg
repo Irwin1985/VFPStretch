@@ -93,7 +93,9 @@ Define Class Stretcher As Custom
 						Local oButton
 						For Each oButton In m.oThis.Buttons
 							.SaveOriginalSize(m.oButton)
-						Endfor
+						EndFor
+					Case m.oThis.BaseClass == 'Listbox'
+						.SaveOriginalSize(m.oThis)
 					Endcase
 				Endif
 			Endfor
@@ -128,6 +130,13 @@ Define Class Stretcher As Custom
 
 		If Pemstatus(m.oObject, 'RowHeight', 5)
 			=AddProperty(m.oObject, "_nOriginalRowheight", m.oObject.RowHeight)
+		EndIf
+
+		* Support for listboxes with columnWidths
+		If m.oObject.BaseClass == 'Listbox' And !Empty(m.oObject.ColumnWidths)
+			If !Pemstatus(m.oObject, '_nOriginalColumnWidths', 5)
+				=AddProperty(m.oObject, "_nOriginalColumnWidths", m.oObject.ColumnWidths)
+			Endif
 		Endif
 	Endfunc
 *========================================================================*
@@ -168,7 +177,9 @@ Define Class Stretcher As Custom
 					Local oButton
 					For Each oButton In m.oThis.Buttons
 						.AdjustSize(m.oButton)
-					Endfor
+					EndFor
+				Case m.oThis.BaseClass == 'Listbox'
+					.AdjustSize(m.oThis)
 				Endcase
 			Endfor
 			If m.oContainer.BaseClass == 'Form'
@@ -206,8 +217,34 @@ Define Class Stretcher As Custom
 
 			If .BaseClass == 'Control' And Pemstatus(m.oObject, 'RepositionContents', 5)
 				.RepositionContents()
-			Endif
-		Endwith
+			EndIf
+			
+			* support for listboxes with columnWidths
+			If .BaseClass == 'Listbox' And !Empty(.ColumnWidths)
+				*_nOriginalColumnWidths
+				Local lnWidth, lcWidths, lnCalculatedWidth, lnOriginalRate, lnIndex
+				lnWidth  = .Width
+				lcWidths = ''
+				lnCalculatedWidth = 0
+				lnOriginalRate = 0
+				lnIndex = 0
+				If lnWidth <> ._nOriginalWidth
+					For lnIndex = 1 To Getwordcount(._nOriginalColumnWidths, ',')
+						lnOriginalRate = Val(Getwordnum(._nOriginalColumnWidths, lnIndex, ',')) / ._nOriginalWidth * 100
+						lnCalculatedWidth = Int(lnOriginalRate * lnWidth / 100)
+						If Empty(lcWidths)
+							lcWidths = Alltrim(Str(lnCalculatedWidth))
+						Else
+							lcWidths = lcWidths + ',' + Alltrim(Str(lnCalculatedWidth))
+						Endif
+					Endfor
+					If !Empty(lcWidths)
+						.ColumnWidths = lcWidths
+					Endif
+				Endif
+			EndIf
+			* end
+		EndWith
 	Endfunc
 *========================================================================*
 * Function Zoom
