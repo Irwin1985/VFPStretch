@@ -1,0 +1,4 @@
+name = "VFPStretch"
+type = "prg"
+repo = "https://raw.githubusercontent.com/Irwin1985/VFPStretch/master/vfpstretch.prg"
+version = "0.0.1"
