@@ -220,7 +220,7 @@ Define Class Stretcher As Custom
 			EndIf
 			
 			* support for listboxes with columnWidths
-			If .BaseClass == 'Listbox' And !Empty(.ColumnWidths)
+			If .BaseClass == 'Listbox' And !Empty(.ColumnWidths) AND PEMSTATUS(m.oObject, '_nOriginalWidth', 5) AND PEMSTATUS(m.oObject, '_nOriginalColumnWidths', 5)
 				*_nOriginalColumnWidths
 				Local lnWidth, lcWidths, lnCalculatedWidth, lnOriginalRate, lnIndex
 				lnWidth  = .Width
