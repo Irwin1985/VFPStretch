@@ -37,10 +37,10 @@ Define Class Stretcher As Custom
 					Return .F.
 				Endif
 			Endif
-
-			.oForm.MinHeight = .oForm.Height
-			.oForm.MinWidth  = .oForm.Width
-
+			* IRODG 2024-07-19: allow forms to be reduces up to 25% of their original size
+			.oForm.MinHeight = .oForm.Height/4
+			.oForm.MinWidth  = .oForm.Width/4
+			* IRODG 2024-07-19: allow forms to be reduces up to 25% of their original size
 			.nOriginalHeight = .oForm.Height
 			.nOriginalWidth  = .oForm.Width
 			.SaveContainer(.oForm)
