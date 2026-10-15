@@ -1,0 +1,10 @@
+{
+  "name": "vfpstretch",
+  "version": "2.1.0",
+  "description": "Resizes every control of a VFP 9 form when the form is resized, and opens forms at a zoom shared by the whole application.",
+  "license": "MIT",
+  "files": [
+    "vfpstretch.prg"
+  ],
+  "usage": "SET PROCEDURE TO vfpstretch.prg ADDITIVE"
+}

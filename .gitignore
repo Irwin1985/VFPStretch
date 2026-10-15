@@ -1,44 +1,22 @@
-# Contine la lista de los archivos y carpetas a ignorar
-
-# Ignorar todos los programas compilados, fomularios, menues y clases
-*.mnt
-*.MNT
-*.mnx
-*.MNX
-*.mpr
-*.MPR
-*.vct
-*.VCT
-*.vcx
-*.VCX
+# Compiled and runtime output
 *.fxp
 *.FXP
-# Ignorar bases de datos, tablas, indices
+*.err
+*.ERR
+*.bak
+*.BAK
+*.exe
+*.app
+FOXUSER.*
+foxuser.*
+
+# Tables are not part of the library
 *.dbf
 *.DBF
 *.cdx
 *.CDX
-*.dbc
-*.DBC
-*.dct
-*.DCT
 *.fpt
 *.FPT
-*.dcx
-*.DCX
-*.irt
-*.IRT
-*.tbk
-*.TBK
-# Ignorar reportes
-*.frx
-*.FRX
-*.frt
-*.FRT
-# Ignorar archivos temporales
-*.bak
-*.BAK
-# Todo el contenido de la carpteta iconos
-#/Iconos
-# Varios
-*.exe
+
+# A project that installs the library with FoxPack
+lib/
